@@ -101,7 +101,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: 24px;
-    display: inline-block; /* Garante que o botão se comporte bem com text-align: center */
+    display: inline-block;
 }
 
 .apple-button:hover {

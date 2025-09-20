@@ -2,8 +2,8 @@
 
 import { CountUp } from 'https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.min.js';
 
-// Data de início do relacionamento L&H
-const startDate = new Date('2019-05-25T00:00:00'); // Atualizado para 25 de Maio de 2019
+// Data de início do relacionamento
+const startDate = new Date('2019-05-25T00:00:00');
 
 /**
  * Calcula a duração do relacionamento em várias unidades.

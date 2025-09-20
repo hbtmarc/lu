@@ -4,43 +4,34 @@ import { initHeartAnimations } from './modules/animations.js';
 import { initGallery } from './modules/gallery.js';
 import { initTimelineCounters } from './modules/timeline.js';
 
-// --- Elementos do DOM ---
-const startScreen = document.getElementById('start-screen');
-const mainContent = document.getElementById('main-content');
-const playMusicButton = document.getElementById('play-music-button');
-const backgroundMusic = document.getElementById('background-music');
-
 /**
  * Função principal de inicialização da aplicação.
  */
 function init() {
-    // 1. Inicia as animações de fundo imediatamente
+    // 1. Inicia todos os componentes visuais
     initHeartAnimations();
-
-    // 2. Adiciona o evento de clique ao botão para iniciar a música e mostrar o conteúdo
-    playMusicButton.addEventListener('click', () => {
-        // Tenta tocar a música
-        backgroundMusic.play().then(() => {
-            console.log("Música a tocar!");
-        }).catch(error => {
-            console.error("Erro ao tocar a música:", error);
-        });
-
-        // Esconde o ecrã inicial e mostra o conteúdo principal
-        startScreen.style.display = 'none';
-        showMainContent();
-    });
-}
-
-/**
- * Mostra o conteúdo principal e inicializa os componentes visuais.
- */
-function showMainContent() {
-    mainContent.style.display = 'block';
-
-    // Inicializa a galeria e os contadores
     initGallery();
     initTimelineCounters();
+
+    // 2. Tenta tocar a música.
+    // Nota: Isto pode ser bloqueado por políticas de autoplay do navegador.
+    const backgroundMusic = document.getElementById('background-music');
+    const playPromise = backgroundMusic.play();
+
+    if (playPromise!== undefined) {
+        playPromise.then(_ => {
+            // Autoplay iniciado com sucesso.
+            console.log("Música a tocar automaticamente!");
+        }).catch(error => {
+            // Autoplay foi bloqueado.
+            console.warn("A reprodução automática da música foi bloqueada pelo navegador.");
+            console.warn("É necessária uma interação do utilizador (clique) para iniciar o áudio.");
+            // Adiciona um evento de clique para que a música toque na primeira interação do utilizador.
+            document.body.addEventListener('click', () => {
+                backgroundMusic.play();
+            }, { once: true }); // O evento só será acionado uma vez.
+        });
+    }
 }
 
 // Inicia a aplicação quando o DOM estiver pronto
