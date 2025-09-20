@@ -79,9 +79,9 @@ export function initHeartAnimations() {
 
     // Carrega a instância de fundo
     tsParticles.load("particles-background", {
-      ...baseConfig,
+     ...baseConfig,
         particles: {
-          ...baseConfig.particles,
+         ...baseConfig.particles,
             number: { value: 60 }, // Mais partículas no fundo
             move: {...baseConfig.particles.move, speed: 1.5 } // Mais lentas
         }
@@ -89,9 +89,9 @@ export function initHeartAnimations() {
 
     // Carrega a instância de primeiro plano
     tsParticles.load("particles-foreground", {
-      ...baseConfig,
+     ...baseConfig,
         particles: {
-          ...baseConfig.particles,
+         ...baseConfig.particles,
             number: { value: 20 }, // Menos partículas à frente
             size: { value: { min: 12, max: 25 } }, // Ligeiramente maiores
             move: {...baseConfig.particles.move, speed: 2.5 } // Mais rápidas

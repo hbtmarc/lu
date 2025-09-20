@@ -11,20 +11,21 @@
 </head>
 <body>
 
+    <audio id="background-music" loop>
+        <source src="assets/music/Meu Abrigo -Melim.mp3" type="audio/mpeg">
+        O seu navegador não suporta o elemento de áudio.
+    </audio>
+
     <div id="particles-background"></div>
     <div id="particles-foreground"></div>
 
     <main class="main-container">
 
-        <section id="loading-screen" class="content-section">
+        <section id="start-screen" class="content-section">
             <div class="content-card">
-                <h1 class="title-1">Preparando uma surpresa...</h1>
-                <p id="auth-message" class="body-text">Para a nossa música tocar, é preciso conectar-se ao Spotify.</p>
-                <button id="login-button" class="apple-button">Entrar com Spotify</button>
-                <div id="mobile-play-button-container" style="display: none;">
-                    <p class="body-text">A música está pronta.</p>
-                    <button id="mobile-play-button" class="apple-button">Toca a nossa canção</button>
-                </div>
+                <h1 class="title-1">Uma surpresa para si...</h1>
+                <p class="body-text">Clique para começar a nossa história.</p>
+                <button id="play-music-button" class="apple-button">▶ Tocar a nossa canção</button>
             </div>
         </section>
 
