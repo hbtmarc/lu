@@ -6,20 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DA TELA INICIAL ---
     beginButton.addEventListener('click', () => {
-        // Inicia a reprodução do Spotify (a função está em spotify.js)
         if (typeof playSpotifyTrack === 'function') {
             playSpotifyTrack();
         }
-
-        // Esmaece a tela inicial
         splashScreen.style.opacity = '0';
         splashScreen.style.pointerEvents = 'none';
-
-        // Mostra o conteúdo principal após a transição
         setTimeout(() => {
             splashScreen.style.display = 'none';
             mainContent.style.display = 'block';
-        }, 800); // Deve corresponder à duração da transição no CSS
+        }, 800);
     });
 
     // --- ANIMAÇÃO DE CORAÇÕES ---
@@ -27,93 +22,61 @@ document.addEventListener('DOMContentLoaded', () => {
         const heart = document.createElement('div');
         heart.classList.add('heart');
         heart.innerHTML = '❤️';
-
-        // Variações para criar profundidade
-        const size = Math.random() * 2 + 1; // 1rem a 3rem
-        const duration = Math.random() * 5 + 5; // 5s a 10s
-        const delay = Math.random() * 5; // 0s a 5s
-        const position = Math.random() * 100; // 0% a 100%
-        const zIndex = Math.random() > 0.5? 1 : -2; // Alguns na frente, outros atrás
-
+        const size = Math.random() * 2 + 1;
+        const duration = Math.random() * 5 + 7;
+        const delay = Math.random() * 5;
+        const position = Math.random() * 100;
         heart.style.fontSize = `${size}rem`;
         heart.style.left = `${position}vw`;
         heart.style.animationDuration = `${duration}s`;
         heart.style.animationDelay = `${delay}s`;
-        heart.style.zIndex = zIndex;
-        
-        // Opacidade menor para corações de fundo
-        if (zIndex === -2) {
-            heart.style.opacity = '0.5';
-        }
-
         heartsContainer.appendChild(heart);
-
-        // Remove o coração do DOM após a animação para não sobrecarregar
-        setTimeout(() => {
-            heart.remove();
-        }, (duration + delay) * 1000);
+        setTimeout(() => heart.remove(), (duration + delay) * 1000);
     }
-
-    // Cria um novo coração a cada 300ms
     setInterval(createHeart, 300);
 
     // --- ANIMAÇÕES DE SCROLL (INTERSECTION OBSERVER) ---
-    const sections = document.querySelectorAll('.content-section');
-    const observerOptions = {
-        root: null, // Observa em relação ao viewport
-        rootMargin: '0px',
-        threshold: 0.15 // Ativa quando 15% da seção estiver visível
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
+    const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
+                // Adiciona um atraso escalonado para um efeito mais dinâmico
+                setTimeout(() => {
+                    entry.target.classList.add('is-visible');
+                }, index * 100);
             }
         });
-    }, observerOptions);
-
-    sections.forEach(section => {
-        observer.observe(section);
-    });
+    }, { threshold: 0.1 });
+    animatedElements.forEach(el => observer.observe(el));
     
-    // --- ANIMAÇÃO DE CONTAGEM DE NÚMEROS (OTIMIZADA) ---
-    const animateNumbers = () => {
-        const numberElements = document.querySelectorAll('.animate-number');
-        numberElements.forEach(el => {
-            const target = +el.getAttribute('data-target');
-            const duration = 2000; // 2 segundos
-            let startTimestamp = null;
+    // --- ANIMAÇÃO DE CONTAGEM DE NÚMEROS (CORRIGIDA E OTIMIZADA) ---
+    const animateNumbers = (el) => {
+        const target = +el.getAttribute('data-target');
+        const duration = 2500; // 2.5 segundos para uma animação mais suave
+        let startTimestamp = null;
 
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const currentNumber = Math.floor(progress * target);
-                el.innerText = currentNumber.toLocaleString('pt-BR');
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        });
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const currentNumber = Math.floor(progress * target);
+            el.innerText = currentNumber.toLocaleString('pt-BR');
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
     };
     
-    // Observador para iniciar a contagem dos números apenas quando visível
-    const timelineSection = document.getElementById('timeline');
-    let numbersAnimated = false;
-    const numberObserver = new IntersectionObserver((entries) => {
+    const numberElements = document.querySelectorAll('.animate-number');
+    const numberObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting &&!numbersAnimated) {
-                animateNumbers();
-                numbersAnimated = true;
-                numberObserver.unobserve(timelineSection);
+            if (entry.isIntersecting) {
+                animateNumbers(entry.target);
+                observer.unobserve(entry.target); // Anima apenas uma vez
             }
         });
     }, { threshold: 0.5 });
-    
-    if (timelineSection) {
-        numberObserver.observe(timelineSection);
-    }
+    numberElements.forEach(el => numberObserver.observe(el));
 
     // --- LÓGICA DA GALERIA DE FOTOS ---
     const slides = document.querySelectorAll('.gallery-slide');
@@ -123,44 +86,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let autoPlayInterval;
 
     function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.remove('active');
-            if (i === index) {
-                slide.classList.add('active');
-            }
-        });
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
     }
-
     function nextSlide() {
         currentIndex = (currentIndex + 1) % slides.length;
         showSlide(currentIndex);
     }
-
     function prevSlide() {
         currentIndex = (currentIndex - 1 + slides.length) % slides.length;
         showSlide(currentIndex);
     }
-
     function startAutoPlay() {
-        autoPlayInterval = setInterval(nextSlide, 5000); // Muda a cada 5 segundos
+        autoPlayInterval = setInterval(nextSlide, 5000);
     }
-
     function resetAutoPlay() {
         clearInterval(autoPlayInterval);
         startAutoPlay();
     }
 
     if (slides.length > 0) {
-        prevBtn.addEventListener('click', () => {
-            prevSlide();
-            resetAutoPlay();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            nextSlide();
-            resetAutoPlay();
-        });
-
+        prevBtn.addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
+        nextBtn.addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
         showSlide(currentIndex);
         startAutoPlay();
     }
