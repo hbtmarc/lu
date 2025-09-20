@@ -1,21 +1,58 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const splashScreen = document.getElementById('splash-screen');
-    const beginButton = document.getElementById('begin-button');
+    // --- ELEMENTOS DO DOM ---
     const mainContent = document.getElementById('main-content');
     const heartsContainer = document.querySelector('.hearts-container');
+    const backgroundMusic = document.getElementById('background-music');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const volumeSlider = document.getElementById('volume-slider');
 
-    // --- LÓGICA DA TELA INICIAL ---
-    beginButton.addEventListener('click', () => {
-        if (typeof playSpotifyTrack === 'function') {
-            playSpotifyTrack();
+    // --- LÓGICA DE MÚSICA ---
+    function setupMusicPlayer() {
+        // Define o volume inicial
+        backgroundMusic.volume = 0.1;
+        volumeSlider.value = 0.1;
+        playPauseBtn.classList.add('paused');
+
+        // Tenta tocar a música automaticamente
+        const playPromise = backgroundMusic.play();
+        if (playPromise!== undefined) {
+            playPromise.then(_ => {
+                // Autoplay funcionou
+                playPauseBtn.classList.remove('paused');
+                playPauseBtn.classList.add('playing');
+            }).catch(error => {
+                // Autoplay foi bloqueado, espera por interação do utilizador
+                console.warn("Autoplay bloqueado. A aguardar interação do utilizador.");
+                document.body.addEventListener('click', () => {
+                    backgroundMusic.play();
+                }, { once: true });
+            });
         }
-        splashScreen.style.opacity = '0';
-        splashScreen.style.pointerEvents = 'none';
-        setTimeout(() => {
-            splashScreen.style.display = 'none';
-            mainContent.style.display = 'block';
-        }, 800);
-    });
+
+        // Event Listeners para os controlos
+        playPauseBtn.addEventListener('click', () => {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+            } else {
+                backgroundMusic.pause();
+            }
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            backgroundMusic.volume = e.target.value;
+        });
+
+        // Sincroniza o ícone do botão com o estado da música
+        backgroundMusic.addEventListener('play', () => {
+            playPauseBtn.classList.remove('paused');
+            playPauseBtn.classList.add('playing');
+        });
+
+        backgroundMusic.addEventListener('pause', () => {
+            playPauseBtn.classList.remove('playing');
+            playPauseBtn.classList.add('paused');
+        });
+    }
 
     // --- ANIMAÇÃO DE CORAÇÕES ---
     function createHeart() {
@@ -40,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-                // Adiciona um atraso escalonado para um efeito mais dinâmico
                 setTimeout(() => {
                     entry.target.classList.add('is-visible');
                 }, index * 100);
@@ -49,17 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
     animatedElements.forEach(el => observer.observe(el));
     
-    // --- ANIMAÇÃO DE CONTAGEM DE NÚMEROS (CORRIGIDA E OTIMIZADA) ---
+    // --- ANIMAÇÃO DE CONTAGEM DE NÚMEROS ---
     const animateNumbers = (el) => {
         const target = +el.getAttribute('data-target');
-        const duration = 2500; // 2.5 segundos para uma animação mais suave
+        const duration = 2500;
         let startTimestamp = null;
-
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const currentNumber = Math.floor(progress * target);
-            el.innerText = currentNumber.toLocaleString('pt-BR');
+            el.innerText = Math.floor(progress * target).toLocaleString('pt-BR');
             if (progress < 1) {
                 window.requestAnimationFrame(step);
             }
@@ -72,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 animateNumbers(entry.target);
-                observer.unobserve(entry.target); // Anima apenas uma vez
+                observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.5 });
@@ -110,4 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showSlide(currentIndex);
         startAutoPlay();
     }
+
+    // --- INICIALIZAÇÃO GERAL ---
+    setupMusicPlayer();
 });
