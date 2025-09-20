@@ -101,7 +101,7 @@ function startPlayback() {
 
     fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
         method: 'PUT',
-        body: JSON.stringify({ uris: }),
+        body: JSON.stringify({ uris: [SPOTIFY_TRACK_URI] }),
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
