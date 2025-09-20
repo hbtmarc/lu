@@ -212,32 +212,32 @@ body {
 
 /* 6. Responsividade */
 @media (max-width: 768px) {
- .main-container {
+.main-container {
         padding: 40px 15px;
         gap: 30px;
     }
 
- .content-card {
+.content-card {
         padding: 30px;
     }
 
- .title-1 {
+.title-1 {
         font-size: 28pt;
     }
 
- .body-text,.headline {
+.body-text,.headline {
         font-size: 16pt;
     }
 
- .counter-number {
+.counter-number {
         font-size: 56pt;
     }
 
- .counter-label {
+.counter-label {
         font-size: 14pt;
     }
 
- .swiper {
+.swiper {
         height: 400px;
     }
 }
