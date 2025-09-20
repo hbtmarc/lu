@@ -2,19 +2,19 @@
 /* IMPORTANTE: Descarregue as fontes do site da Apple Developer e coloque-as na pasta 'fonts' */
 @font-face {
     font-family: 'SF Pro Display';
-    src: url('../fonts/SF-Pro-Display-Bold.otf') format('opentype');
+    src: url('../css/fonts/SF-Pro-Display-Bold.otf') format('opentype');
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: 'SF Pro Display';
-    src: url('../fonts/SF-Pro-Display-Regular.otf') format('opentype');
+    src: url('../css/fonts/SF-Pro-Display-Regular.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: 'SF Pro Text';
-    src: url('../fonts/SF-Pro-Text-Regular.otf') format('opentype');
+    src: url('../css/fonts/SF-Pro-Text-Regular.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
 }
