@@ -1,6 +1,6 @@
 // js/main.js
 
-import { redirectToAuthCodeFlow, getAccessToken, initializePlayer, playTrack, resumePlayback } from './modules/spotify.js';
+import { redirectToAuthCodeFlow, getAccessToken, initializePlayer, playTrack, resumePlayback, redirectUri } from './modules/spotify.js';
 import { initHeartAnimations } from './modules/animations.js';
 import { initGallery } from './modules/gallery.js';
 import { initTimelineCounters } from './modules/timeline.js';
@@ -30,12 +30,13 @@ async function init() {
         // 2. Se houver um código na URL, obtém um novo token
         try {
             accessToken = await getAccessToken(code);
-            // Limpa a URL para remover o código
-            window.history.pushState({}, null, "/lu/"); 
+            // Limpa a URL para remover o código, de forma robusta
+            const path = new URL(redirectUri).pathname;
+            window.history.pushState({}, null, path); 
         } catch (error) {
             console.error("Falha ao obter o token de acesso:", error);
             authMessage.textContent = "Ocorreu um erro. Por favor, tente novamente.";
-            loginButton.style.display = 'block';
+            loginButton.style.display = 'inline-block';
             return;
         }
     }
@@ -63,7 +64,8 @@ async function init() {
         }
     } else {
         // 4. Se não há token, mostra o botão de login
-        loginButton.style.display = 'block';
+        // CORREÇÃO: Usar 'inline-block' para respeitar o text-align: center do pai.
+        loginButton.style.display = 'inline-block';
     }
 }
 

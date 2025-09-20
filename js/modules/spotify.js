@@ -1,13 +1,17 @@
 // js/modules/spotify.js
 
 // --- Configuração ---
-// O utilizador deve preencher estes valores obtidos no Dashboard de Desenvolvedor do Spotify.
-const clientId = "acaf0dfdee394fb09f91ac732552a1ff"; // IMPORTANTE: Substituir pelo seu Client ID
+// ###################################################################################
+// # IMPORTANTE: O BOTÃO NÃO FUNCIONARÁ ATÉ QUE SUBSTITUA O VALOR ABAIXO.          #
+// ###################################################################################
+// Cole o seu Client ID do Spotify Developer Dashboard aqui.
+const clientId = "acaf0dfdee394fb09f91ac732552a1ff"; 
+
 const trackUri = "spotify:track:5U28PY9MekLyCBYtLHGQpe"; // URI da música "A Thousand Years"
 
 // O Redirect URI deve corresponder exatamente ao que foi configurado no Dashboard do Spotify.
 // Atualizado para o seu URL específico do GitHub Pages.
-const redirectUri = "https://hbtmarc.github.io/lu/";
+export const redirectUri = "https://hbtmarc.github.io/lu/";
 
 let player = null;
 let deviceId = null;
@@ -19,6 +23,11 @@ let deviceId = null;
  * Gera e armazena o code_verifier para uso posterior.
  */
 export async function redirectToAuthCodeFlow() {
+    if (clientId === "SEU_CLIENT_ID_AQUI") {
+        alert("Erro: O Client ID do Spotify não foi configurado no ficheiro js/modules/spotify.js");
+        return;
+    }
+
     const verifier = generateCodeVerifier(128);
     const challenge = await generateCodeChallenge(verifier);
 
@@ -182,7 +191,7 @@ async function generateCodeChallenge(codeVerifier) {
     const data = new TextEncoder().encode(codeVerifier);
     const digest = await window.crypto.subtle.digest('SHA-256', data);
     return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
 }

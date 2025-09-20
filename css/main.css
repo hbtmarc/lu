@@ -56,7 +56,7 @@ body {
     text-align: center;
 }
 
-/* 3. Sistema Tipográfico (Baseado na Tabela 1) */
+/* 3. Sistema Tipográfico */
 .title-1 {
     font-size: 34pt;
     font-weight: 300;
@@ -90,13 +90,11 @@ body {
 }
 
 /* 4. Componentes Específicos */
-
-/* Botão estilo Apple */
 .apple-button {
     background-color: var(--apple-blue);
     color: var(--apple-white);
     border: none;
-    border-radius: 999px; /* Forma de cápsula */
+    border-radius: 999px;
     padding: 12px 24px;
     font-size: 17pt;
     font-weight: 400;
@@ -110,7 +108,6 @@ body {
     transform: scale(1.05);
 }
 
-/* Secção da Linha do Tempo */
 .timeline-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -139,7 +136,6 @@ body {
     margin-top: 8px;
 }
 
-/* Secção da Galeria */
 .gallery-section.content-card {
     padding: 0;
     background-color: transparent;
@@ -168,7 +164,6 @@ body {
     object-fit: cover;
 }
 
-/* Estilização dos controlos do Swiper */
 :root {
     --swiper-navigation-color: var(--apple-white);
     --swiper-pagination-color: var(--apple-white);
@@ -193,7 +188,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Permite clicar através do canvas */
+    pointer-events: none;
 }
 
 #particles-background {
@@ -204,7 +199,6 @@ body {
     z-index: 10;
 }
 
-/* Animação de Fade-in para o conteúdo */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -218,32 +212,32 @@ body {
 
 /* 6. Responsividade */
 @media (max-width: 768px) {
-  .main-container {
+ .main-container {
         padding: 40px 15px;
         gap: 30px;
     }
 
-  .content-card {
+ .content-card {
         padding: 30px;
     }
 
-  .title-1 {
+ .title-1 {
         font-size: 28pt;
     }
 
-  .body-text,.headline {
+ .body-text,.headline {
         font-size: 16pt;
     }
 
-  .counter-number {
+ .counter-number {
         font-size: 56pt;
     }
 
-  .counter-label {
+ .counter-label {
         font-size: 14pt;
     }
 
-  .swiper {
+ .swiper {
         height: 400px;
     }
 }
