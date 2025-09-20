@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Luiza</title>
+    
+    <link rel="stylesheet" href="css/main.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+<body>
+
+    <div id="particles-background"></div>
+    <div id="particles-foreground"></div>
+
+    <main class="main-container">
+
+        <section id="loading-screen" class="content-section">
+            <div class="content-card">
+                <h1 class="title-1">Preparando uma surpresa...</h1>
+                <p id="auth-message" class="body-text">Para a nossa música tocar, é preciso conectar-se ao Spotify.</p>
+                <button id="login-button" class="apple-button">Entrar com Spotify</button>
+                <div id="mobile-play-button-container" style="display: none;">
+                    <p class="body-text">A música está pronta.</p>
+                    <button id="mobile-play-button" class="apple-button">Toca a nossa canção</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="main-content" style="display: none;">
+
+            <header class="content-section">
+                <div class="content-card">
+                    <h1 class="title-1">Luiza, meu amor.</h1>
+                    <p class="body-text">
+                        Seis anos, três meses e vinte e cinco dias. Cada um desses momentos, como as estrelas que formam uma constelação, desenhou a história mais bonita que eu conheço: a nossa. Olhar para trás não é apenas ver o tempo passar, é ver a cumplicidade crescer, o amor amadurecer e a certeza de que "whatever our souls are made of, his and mine are the same". Obrigado por ser minha parceira, minha confidente, meu tudo. Esta é uma pequena celebração do nosso tempo, do nosso amor e de tudo o que ainda vamos viver.
+                    </p>
+                </div>
+            </header>
+
+            <section class="content-section">
+                <div class="content-card">
+                    <h2 class="headline">A nossa jornada em números</h2>
+                    <div class="timeline-grid">
+                        <div class="timeline-item">
+                            <span id="days-counter" class="counter-number">0</span>
+                            <span class="counter-label">dias de cumplicidade</span>
+                        </div>
+                        <div class="timeline-item">
+                            <span id="hours-counter" class="counter-number">0</span>
+                            <span class="counter-label">horas de conversas</span>
+                        </div>
+                        <div class="timeline-item">
+                            <span id="heartbeats-counter" class="counter-number">0</span>
+                            <span class="counter-label">batidas do coração juntos (aprox.)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section gallery-section">
+                <h2 class="headline">As nossas memórias</h2>
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="assets/images/foto1.jpg" alt="Memória 1"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto2.jpg" alt="Memória 2"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto3.jpg" alt="Memória 3"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto4.jpg" alt="Memória 4"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto5.jpg" alt="Memória 5"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto6.jpg" alt="Memória 6"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto7.jpg" alt="Memória 7"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto8.jpg" alt="Memória 8"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto9.jpg" alt="Memória 9"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto10.jpg" alt="Memória 10"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto11.jpg" alt="Memória 11"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto12.jpg" alt="Memória 12"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto13.jpg" alt="Memória 13"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto14.jpg" alt="Memória 14"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto15.jpg" alt="Memória 15"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto16.jpg" alt="Memória 16"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto17.jpg" alt="Memória 17"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto18.jpg" alt="Memória 18"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto19.jpg" alt="Memória 19"></div>
+                        <div class="swiper-slide"><img src="assets/images/foto20.jpg" alt="Memória 20"></div>
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </section>
+
+            <footer class="content-section">
+                <div class="content-card">
+                    <p class="footnote-text">Com todo o meu amor, hoje e sempre.</p>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.12.0/tsparticles.slim.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.min.js"></script>
+
+    <script src="js/main.js" type="module"></script>
+
+</body>
+</html>
