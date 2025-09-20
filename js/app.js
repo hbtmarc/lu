@@ -69,8 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
-                // Opcional: para de observar o elemento após a primeira animação
-                // observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -79,26 +77,24 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(section);
     });
     
-    // --- ANIMAÇÃO DE CONTAGEM DE NÚMEROS ---
+    // --- ANIMAÇÃO DE CONTAGEM DE NÚMEROS (OTIMIZADA) ---
     const animateNumbers = () => {
         const numberElements = document.querySelectorAll('.animate-number');
         numberElements.forEach(el => {
             const target = +el.getAttribute('data-target');
             const duration = 2000; // 2 segundos
-            let start = 0;
-            const stepTime = 20; // Atualiza a cada 20ms
-            const steps = duration / stepTime;
-            const increment = target / steps;
+            let startTimestamp = null;
 
-            const timer = setInterval(() => {
-                start += increment;
-                if (start >= target) {
-                    el.innerText = target.toLocaleString('pt-BR');
-                    clearInterval(timer);
-                } else {
-                    el.innerText = Math.ceil(start).toLocaleString('pt-BR');
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentNumber = Math.floor(progress * target);
+                el.innerText = currentNumber.toLocaleString('pt-BR');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
                 }
-            }, stepTime);
+            };
+            window.requestAnimationFrame(step);
         });
     };
     
@@ -106,17 +102,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const timelineSection = document.getElementById('timeline');
     let numbersAnimated = false;
     const numberObserver = new IntersectionObserver((entries) => {
-        if (entries.isIntersecting &&!numbersAnimated) {
-            animateNumbers();
-            numbersAnimated = true;
-            numberObserver.unobserve(timelineSection);
-        }
+        entries.forEach(entry => {
+            if (entry.isIntersecting &&!numbersAnimated) {
+                animateNumbers();
+                numbersAnimated = true;
+                numberObserver.unobserve(timelineSection);
+            }
+        });
     }, { threshold: 0.5 });
     
     if (timelineSection) {
         numberObserver.observe(timelineSection);
     }
-
 
     // --- LÓGICA DA GALERIA DE FOTOS ---
     const slides = document.querySelectorAll('.gallery-slide');
