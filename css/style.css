@@ -1,0 +1,311 @@
+/* === FONTES (SF PRO) === */
+/* É necessário baixar as fontes do site da Apple Developer e colocá-las na pasta 'fonts' */
+
+/* SF Pro Display - Para textos >= 20pt */
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('../fonts/SF-Pro-Display-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('../fonts/SF-Pro-Display-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* SF Pro Text - Para textos < 20pt */
+@font-face {
+    font-family: 'SF Pro Text';
+    src: url('../fonts/SF-Pro-Text-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* === VARIÁVEIS GLOBAIS E TEMA === */
+:root {
+    /* Paleta de Cores - Modo Claro */
+    --color-background-base: #F5F5F7;
+    --color-background-elevated: #FFFFFF;
+    --color-text-primary: #1D1D1F;
+    --color-text-secondary: #6E6E73;
+    --color-accent: #007AFF;
+    --color-heart: #FF3B30;
+
+    /* Tipografia */
+    --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-text: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Animações */
+    --transition-smooth: cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+/* Paleta de Cores - Modo Escuro (Ativado pela preferência do sistema) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-background-base: #000000;
+        --color-background-elevated: #1C1C1E;
+        --color-text-primary: #F5F5F7;
+        --color-text-secondary: #8E8E93;
+        --color-accent: #0A84FF;
+        --color-heart: #FF453A;
+    }
+}
+
+/* === ESTILOS DE BASE === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-background-base);
+    color: var(--color-text-primary);
+    font-family: var(--font-text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* === CLASSES DE TIPOGRAFIA (Baseado na Tabela 2) === */
+.text-large-title {
+    font-family: var(--font-display);
+    font-size: 2.125rem; /* 34pt */
+    font-weight: 400;
+    letter-spacing: 0.011em;
+}
+
+.text-title-1 {
+    font-family: var(--font-display);
+    font-size: 1.75rem; /* 28pt */
+    font-weight: 700;
+    letter-spacing: 0.013em;
+}
+
+.text-title-2 {
+    font-family: var(--font-display);
+    font-size: 1.375rem; /* 22pt */
+    font-weight: 400;
+    letter-spacing: 0.016em;
+}
+
+.text-body {
+    font-family: var(--font-text);
+    font-size: 1.0625rem; /* 17pt */
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    max-width: 680px; /* Largura ideal para leitura */
+}
+
+.text-caption {
+    font-family: var(--font-text);
+    font-size: 0.75rem; /* 12pt */
+    font-weight: 400;
+    letter-spacing: 0em;
+    color: var(--color-text-secondary);
+}
+
+/* === ANIMAÇÃO DE CORAÇÕES === */
+.hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1; /* Fica atrás de todo o conteúdo */
+}
+
+.heart {
+    position: absolute;
+    bottom: -50px; /* Começa fora da tela */
+    font-size: 2rem;
+    color: var(--color-heart);
+    animation: fall linear infinite;
+    user-select: none;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+}
+
+/* === TELA INICIAL (SPLASH SCREEN) === */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-background-base);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity 0.8s var(--transition-smooth);
+}
+
+.splash-content {
+    text-align: center;
+}
+
+#begin-button {
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 18px; /* Canto arredondado suave */
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: transform 0.3s var(--transition-smooth), background-color 0.3s;
+}
+
+#begin-button:hover {
+    transform: scale(1.05);
+    background-color: color-mix(in srgb, var(--color-accent) 90%, black);
+}
+
+/* === ESTRUTURA PRINCIPAL E SEÇÕES === */
+.content-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    opacity: 0; /* Estado inicial para animação de scroll */
+    transform: translateY(20px);
+    transition: opacity 1s var(--transition-smooth), transform 1s var(--transition-smooth);
+}
+
+.content-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === HERO === */
+#hero.text-body {
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+}
+
+/* === LINHA DO TEMPO === */
+#timeline.text-title-2 {
+    margin-top: 0.5rem;
+    color: var(--color-text-secondary);
+}
+.time-breakdown {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.time-breakdown.text-title-1 {
+    color: var(--color-accent);
+}
+.time-breakdown.text-body {
+    margin-top: -1.2rem;
+}
+
+/* === GALERIA === */
+.gallery-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 2rem;
+    aspect-ratio: 16 / 10;
+    background-color: var(--color-background-elevated);
+    border-radius: 24px; /* Canto arredondado generoso */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+   .gallery-wrapper {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.gallery-container {
+    width: 100%;
+    height: 100%;
+}
+
+.gallery-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.8s var(--transition-smooth);
+    z-index: 1;
+}
+
+.gallery-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+.gallery-nav:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+.gallery-nav.prev {
+    left: 1rem;
+}
+.gallery-nav.next {
+    right: 1rem;
+}
+
+/* === CARTA === */
+.letter-content {
+    text-align: left;
+    max-width: 680px;
+}
+.letter-content.text-body {
+    margin-top: 1.5rem;
+}
+
+/* === RODAPÉ === */
+#footer {
+    padding: 2rem;
+    text-align: center;
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+   .text-large-title { font-size: 1.8rem; }
+   .text-title-1 { font-size: 1.5rem; }
+   .text-title-2 { font-size: 1.2rem; }
+   .text-body { font-size: 1rem; }
+}
