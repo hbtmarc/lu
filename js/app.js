@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENTOS DO DOM ---
-    const mainContent = document.getElementById('main-content');
     const heartsContainer = document.querySelector('.hearts-container');
     const backgroundMusic = document.getElementById('background-music');
     const playPauseBtn = document.getElementById('play-pause-btn');
@@ -8,41 +7,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DE MÚSICA ---
     function setupMusicPlayer() {
-        // Define o volume inicial
-        backgroundMusic.volume = 0.1;
-        volumeSlider.value = 0.1;
+        backgroundMusic.volume = 0.03;
+        volumeSlider.value = 0.03;
         playPauseBtn.classList.add('paused');
 
-        // Tenta tocar a música automaticamente
         const playPromise = backgroundMusic.play();
         if (playPromise!== undefined) {
-            playPromise.then(_ => {
-                // Autoplay funcionou
-                playPauseBtn.classList.remove('paused');
-                playPauseBtn.classList.add('playing');
-            }).catch(error => {
-                // Autoplay foi bloqueado, espera por interação do utilizador
+            playPromise.catch(error => {
                 console.warn("Autoplay bloqueado. A aguardar interação do utilizador.");
-                document.body.addEventListener('click', () => {
-                    backgroundMusic.play();
-                }, { once: true });
+                document.body.addEventListener('click', () => backgroundMusic.play(), { once: true });
             });
         }
 
-        // Event Listeners para os controlos
         playPauseBtn.addEventListener('click', () => {
-            if (backgroundMusic.paused) {
-                backgroundMusic.play();
-            } else {
-                backgroundMusic.pause();
-            }
+            backgroundMusic.paused? backgroundMusic.play() : backgroundMusic.pause();
         });
 
         volumeSlider.addEventListener('input', (e) => {
             backgroundMusic.volume = e.target.value;
         });
 
-        // Sincroniza o ícone do botão com o estado da música
         backgroundMusic.addEventListener('play', () => {
             playPauseBtn.classList.remove('paused');
             playPauseBtn.classList.add('playing');
@@ -59,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const heart = document.createElement('div');
         heart.classList.add('heart');
         heart.innerHTML = '❤️';
-        const size = Math.random() * 2 + 1;
-        const duration = Math.random() * 5 + 7;
+        const size = Math.random() * 1.5 + 1;
+        const duration = Math.random() * 5 + 8;
         const delay = Math.random() * 5;
         const position = Math.random() * 100;
         heart.style.fontSize = `${size}rem`;
@@ -70,16 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
         heartsContainer.appendChild(heart);
         setTimeout(() => heart.remove(), (duration + delay) * 1000);
     }
-    setInterval(createHeart, 300);
+    setInterval(createHeart, 400);
 
-    // --- ANIMAÇÕES DE SCROLL (INTERSECTION OBSERVER) ---
+    // --- ANIMAÇÕES DE SCROLL ---
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('is-visible');
-                }, index * 100);
+                entry.target.classList.add('is-visible');
             }
         });
     }, { threshold: 0.1 });
@@ -88,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ANIMAÇÃO DE CONTAGEM DE NÚMEROS ---
     const animateNumbers = (el) => {
         const target = +el.getAttribute('data-target');
-        const duration = 2500;
+        const duration = 2000;
         let startTimestamp = null;
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;

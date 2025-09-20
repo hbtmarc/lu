@@ -12,7 +12,7 @@
 <body>
 
     <audio id="background-music" loop>
-        <source src="assets/music/meu-abrigo-melim.mp3" type="audio/mpeg">
+        <source src="music/meu-abrigo-melim.mp3" type="audio/mpeg">
     </audio>
 
     <div class="hearts-container"></div>
@@ -20,13 +20,14 @@
     <main id="main-content">
 
         <section id="hero" class="content-section">
-            <h1 class="text-large-title gradient-text">Para o meu amor, Luiza.</h1>
-            <p class="text-body animate-on-scroll">Uma pequena celebração da nossa jornada.</p>
+            <h1 class="text-large-title gradient-text animate-on-scroll">Para o meu amor, Luiza.</h1>
+            <p class="text-body animate-on-scroll" style="--animation-delay: 1;">Uma pequena celebração da nossa jornada.</p>
         </section>
 
         <div class="summary-grid">
-            <div id="timeline-card" class="summary-card animate-on-scroll">
-                <h2 class="text-title-2">A nossa jornada.</h2>
+            
+            <div id="timeline-card" class="summary-card animate-on-scroll large-card">
+                <h2 class="text-title-2">A Nossa Jornada</h2>
                 <div class="time-breakdown">
                     <div class="time-item">
                         <p class="text-large-title animate-number" data-target="2308">0</p>
@@ -39,8 +40,24 @@
                 </div>
             </div>
 
-            <div id="gallery-card" class="summary-card animate-on-scroll">
-                <h2 class="text-title-2">Nossos Momentos</h2>
+            <div id="partnership-card" class="summary-card animate-on-scroll">
+                <div class="card-icon partnership-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <h3 class="text-body">Parceria Nível Pro</h3>
+                <p class="text-caption">Confiança e suporte incondicionais.</p>
+            </div>
+
+            <div id="battery-card" class="summary-card animate-on-scroll">
+                <div class="card-icon battery-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 4h-3V2h-4v2H7c-1.1 0-2.9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H7V6h1.67L10 7.33 11.33 6H13v14z"/></svg>
+                </div>
+                <h3 class="text-body">Bateria de Longa Duração</h3>
+                <p class="text-caption">Um amor que se renova a cada dia.</p>
+            </div>
+
+            <div id="gallery-card" class="summary-card animate-on-scroll large-card full-width">
+                <h2 class="text-title-1">Nossos Momentos</h2>
                 <div class="gallery-wrapper">
                     <div class="gallery-container">
                         <img src="images/foto1.jpg" alt="Memória 1" class="gallery-slide active">
@@ -59,19 +76,21 @@
                 </div>
             </div>
 
-            <div id="letter-card" class="summary-card animate-on-scroll full-width">
+            <div id="design-card" class="summary-card animate-on-scroll">
+                 <div class="card-icon design-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.02c-5.51 0-9.98 4.47-9.98 9.98s4.47 9.98 9.98 9.98 9.98-4.47 9.98-9.98S17.51 2.02 12 2.02zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-.5-12.01l-2.5 4.5-1.5-2.25L5.5 15h13l-4.5-6.01z"/></svg>
+                </div>
+                <h3 class="text-body">Design Único</h3>
+                <p class="text-caption">Uma história que só nós poderíamos criar.</p>
+            </div>
+
+            <div id="letter-card" class="summary-card animate-on-scroll large-card">
                 <div class="letter-content">
                     <h2 class="text-title-1">Luiza,</h2>
                     <p class="text-body">
-                        Hoje, quando olho para trás, vejo mais do que apenas o tempo que passou. Vejo a tapeçaria que tecemos juntos, fio a fio, com risadas, sonhos, desafios e, acima de tudo, um amor que se tornou o alicerce de tudo. Cada um desses mais de dois mil dias ao seu lado foi um presente.
+                        Hoje, quando olho para trás, vejo a tapeçaria que tecemos juntos, fio a fio, com risadas, sonhos e um amor que se tornou o alicerce de tudo. Cada um desses dias ao seu lado foi um presente. Sua ternura é o meu porto seguro, sua força é a minha inspiração. Obrigado por ser você.
                     </p>
-                    <p class="text-body">
-                        Sua ternura é o meu porto seguro, sua força é a minha inspiração. Em você, encontrei não apenas uma namorada, mas minha melhor amiga, minha confidente, minha parceira em todas as aventuras. A cumplicidade que compartilhamos é algo raro e precioso.
-                    </p>
-                    <p class="text-body">
-                        Obrigado por cada segundo. Obrigado por ser você. Esta é apenas uma pequena forma de dizer que cada momento da nossa jornada valeu a pena, e que mal posso esperar por todos os que ainda virão.
-                    </p>
-                    <p class="text-body">
+                    <p class="text-body" style="margin-top: 1rem;">
                         Com todo o meu amor, sempre.
                     </p>
                 </div>
@@ -82,14 +101,11 @@
 
     <footer id="footer">
         <div class="music-controls">
-            <button id="play-pause-btn" class="control-btn" aria-label="Tocar/Pausar">
-                </button>
+            <button id="play-pause-btn" class="control-btn" aria-label="Tocar/Pausar"></button>
             <div class="volume-container">
-                <span class="volume-icon">🔈</span>
-                <input type="range" id="volume-slider" min="0" max="1" step="0.01" aria-label="Controlo de volume">
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.03" aria-label="Controlo de volume">
             </div>
         </div>
-        <p class="text-caption">Feito com amor, para o meu amor.</p>
     </footer>
 
 </body>
