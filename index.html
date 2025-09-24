@@ -47,7 +47,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1;
+            z-index: -1; /* Garante que fique atrás de todo o conteúdo */
             overflow: hidden;
         }
 
@@ -163,12 +163,11 @@
         
         /* Seção de Números */
         .stats-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem 1rem;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
         }
 
         .stat-item {
@@ -179,15 +178,15 @@
         }
         
         .stat-number {
-            font-size: clamp(3.5rem, 10vw, 6rem);
-            font-weight: 900;
+            font-size: clamp(2.5rem, 6vw, 4rem); /* Tamanho ajustado para caber mais itens */
+            font-weight: 700;
             color: var(--accent-color);
             line-height: 1;
         }
 
         .stat-label {
-            font-size: 1.2rem;
-            font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 400;
             color: rgba(255, 255, 255, 0.7);
         }
 
@@ -224,7 +223,7 @@
     <main>
         <!-- Seção 1: Herói -->
         <section class="section hero">
-            <h1>Para Luiza</h1>
+            <h1>Para LUIZA</h1>
             <p>Uma história escrita nas estrelas.</p>
         </section>
 
@@ -248,27 +247,12 @@
             </div>
         </section>
 
-        <!-- Seção 3: Números -->
+        <!-- Seção 3: Números do Nosso Amor -->
         <section class="section">
-            <h2 class="section-title">Cada Segundo Conta</h2>
-            <p class="section-subtitle">Os números que definem a nossa história, crescendo a cada dia que passa.</p>
+            <h2 class="section-title">O Tempo ao Nosso Lado</h2>
+            <p class="section-subtitle">Os números que definem a nossa história, crescendo a cada segundo que passa.</p>
             <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="stat-number counter" data-target="1825">0</span>
-                    <span class="stat-label">Dias Juntos</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number counter" data-target="1503">0</span>
-                    <span class="stat-label">Abraços Apertados</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number counter" data-target="9999">0</span>
-                    <span class="stat-label">Sorrisos Compartilhados</span>
-                </div>
-                 <div class="stat-item">
-                    <span class="stat-number counter" data-target="1">0</span>
-                    <span class="stat-label">Amor Infinito</span>
-                </div>
+                <!-- Os cálculos são baseados na data de 25/05/2019 e atualizados dinamicamente -->
             </div>
         </section>
         
@@ -277,8 +261,6 @@
             <h2 class="section-title">Momentos Inesquecíveis</h2>
             <p class="section-subtitle">Pequenos fragmentos da nossa felicidade, capturados para a eternidade.</p>
             <div class="gallery">
-                <!-- Para um melhor desempenho, as imagens devem ser otimizadas para a web -->
-                <!-- Substitua os placeholders abaixo pelas suas fotos -->
                 <div class="gallery-item">
                      <img src="https://placehold.co/1200x800/000000/FFFFFF?text=Foto+1" alt="Imagem do casal 1" class="parallax-img" loading="lazy">
                 </div>
@@ -294,7 +276,27 @@
             </div>
         </section>
 
-        <!-- Seção 5: Mensagem Final -->
+        <!-- Seção 5: Pequenos Detalhes -->
+        <section class="section">
+             <h2 class="section-title">Coisas que Amo em Você</h2>
+             <p class="section-subtitle">São os pequenos detalhes que constroem o meu amor gigante por você.</p>
+             <div class="content-grid">
+                 <div class="info-card">
+                     <h3>Seu Sorriso</h3>
+                     <p class="typewriter">A forma como seus olhos se iluminam quando você sorri de verdade. É a minha luz guia nos dias mais escuros e a razão da minha felicidade.</p>
+                 </div>
+                 <div class="info-card">
+                     <h3>Sua Força</h3>
+                     <p class="typewriter">A sua capacidade de enfrentar qualquer desafio com coragem e otimismo me inspira todos os dias. Você é a pessoa mais forte que eu conheço.</p>
+                 </div>
+                 <div class="info-card">
+                     <h3>Nosso Refúgio</h3>
+                     <p class="typewriter">A paz que eu sinto quando estamos juntos, em nosso próprio mundo, onde nada mais importa. Com você, eu estou em casa, em qualquer lugar.</p>
+                 </div>
+             </div>
+        </section>
+
+        <!-- Seção 6: Mensagem Final -->
         <section class="section">
             <h2 class="section-title">E o futuro... é todo nosso.</h2>
             <p class="section-subtitle" style="max-width: 900px;">Com você, cada dia é uma promessa de felicidade, e cada desafio se torna uma oportunidade para fortalecermos ainda mais o nosso laço. Mal posso esperar por tudo que ainda vamos viver. Eu te amo, hoje e sempre.</p>
@@ -309,15 +311,15 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // --- LÓGICA ORIGINAL DE CORAÇÕES ---
+            // --- LÓGICA DE CORAÇÕES ---
             const heartContainer = document.getElementById('heart-container');
             function createHeart() {
                 const heart = document.createElement('div');
                 heart.classList.add('heart');
                 heart.innerHTML = '❤';
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 3 + 7 + 's'; // Duração entre 7s e 10s
-                heart.style.fontSize = Math.random() * 1.5 + 1 + 'rem'; // Tamanho entre 1rem e 2.5rem
+                heart.style.animationDuration = Math.random() * 3 + 7 + 's';
+                heart.style.fontSize = Math.random() * 1.5 + 1 + 'rem';
                 
                 heartContainer.appendChild(heart);
 
@@ -325,79 +327,138 @@
                     heart.remove();
                 }, 10000);
             }
-            // Cria um novo coração a cada 300ms
             setInterval(createHeart, 300);
 
+            // --- CÁLCULO DINÂMICO DOS NÚMEROS ---
+            function calculateTime() {
+                const startDate = new Date('2019-05-25T00:00:00');
+                const now = new Date();
+                const diff = now.getTime() - startDate.getTime();
+
+                const ms = diff;
+                const secs = Math.floor(diff / 1000);
+                const mins = Math.floor(secs / 60);
+                const hours = Math.floor(mins / 60);
+                const days = Math.floor(hours / 24);
+                
+                let years = now.getFullYear() - startDate.getFullYear();
+                let months = now.getMonth() - startDate.getMonth();
+                if (months < 0 || (months === 0 && now.getDate() < startDate.getDate())) {
+                    years--;
+                    months += 12;
+                }
+                const totalMonths = years * 12 + months;
+
+                const hugs = days * 3;
+                const smiles = days * 18;
+                const kisses = days * 6;
+
+                return {
+                    years, totalMonths, days, hours, mins, secs, ms, hugs, smiles, kisses
+                };
+            }
             
-            // --- NOVAS ANIMAÇÕES COM GSAP ---
+            function updateStats() {
+                const stats = calculateTime();
+                const statsGrid = document.querySelector('.stats-grid');
+                statsGrid.innerHTML = `
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.years}">0</span><span class="stat-label">Anos</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.totalMonths}">0</span><span class="stat-label">Meses</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.days}">0</span><span class="stat-label">Dias</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.hours}">0</span><span class="stat-label">Horas</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.mins}">0</span><span class="stat-label">Minutos</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.secs}">0</span><span class="stat-label">Segundos</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.hugs}">0</span><span class="stat-label">Abraços</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.smiles}">0</span><span class="stat-label">Sorrisos</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.kisses}">0</span><span class="stat-label">Beijos</span></div>
+                    <div class="stat-item"><span class="stat-number counter" data-target="1">∞</span><span class="stat-label">Amor Infinito</span></div>
+                `;
+                 // Animação para os itens de estatísticas (fade in)
+                const statItems = gsap.utils.toArray('.stat-item');
+                statItems.forEach(item => {
+                    gsap.to(item, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: item,
+                            start: 'top 85%',
+                            toggleActions: 'play reverse play reverse'
+                        }
+                    });
+                });
+                
+                // Animação de contagem de números
+                const counters = gsap.utils.toArray('.counter');
+                counters.forEach(counter => {
+                    const target = +counter.dataset.target;
+                    let num = { value: 0 };
+                    
+                    if (target === 1) { // Lógica para Amor Infinito
+                        counter.textContent = '∞';
+                        return;
+                    }
+
+                    gsap.to(num, {
+                        value: target,
+                        duration: 3,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: counter,
+                            start: 'top 85%',
+                            toggleActions: 'play reverse play reverse',
+                            onLeaveBack: () => num.value = 0, // Reseta o valor ao sair da tela
+                            onEnter: () => gsap.to(num, { value: target, duration: 3, ease: 'power2.out' })
+                        },
+                        onUpdate: () => {
+                             counter.textContent = Math.round(num.value).toLocaleString('pt-BR');
+                        }
+                    });
+                });
+            }
+            
+            updateStats(); // Chame a função para popular e animar
+
+            // --- ANIMAÇÕES GERAIS COM GSAP ---
             gsap.registerPlugin(ScrollTrigger);
 
-            // Animação de entrada do título principal (Hero)
-            gsap.from('.hero h1, .hero p', {
-                opacity: 0,
-                y: 50,
-                duration: 1.5,
-                stagger: 0.2,
-                ease: 'power3.out'
-            });
+            gsap.from('.hero h1, .hero p', { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: 'power3.out' });
 
-            // Animação para títulos e subtítulos de cada seção
             const sectionHeadings = gsap.utils.toArray('.section-title, .section-subtitle');
             sectionHeadings.forEach(heading => {
                 gsap.to(heading, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: heading,
-                        start: 'top 85%',
-                        toggleActions: 'play reverse play reverse'
-                    }
+                    opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+                    scrollTrigger: { trigger: heading, start: 'top 85%', toggleActions: 'play reverse play reverse' }
                 });
             });
 
-            // Animação para os cartões de informação
             const infoCards = gsap.utils.toArray('.info-card');
             infoCards.forEach(card => {
                 gsap.to(card, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 85%',
-                        toggleActions: 'play reverse play reverse'
-                    }
+                    opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+                    scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play reverse play reverse' }
                 });
             });
 
-            // Animação de máquina de escrever para parágrafos
             const typewriterElements = gsap.utils.toArray('.typewriter');
             typewriterElements.forEach(p => {
                 const originalText = p.innerText;
-                p.innerText = ''; // Limpa o texto inicial
+                p.innerText = '';
                 
                 ScrollTrigger.create({
-                    trigger: p,
-                    start: 'top 85%',
-                    once: false, // Permite que a animação rode novamente
+                    trigger: p, start: 'top 85%', once: false,
                     onToggle: self => {
                         if (self.isActive) {
-                            // Anima a "escrita" quando entra na tela
                             let i = 0;
-                            p.innerText = ''; // Reseta ao re-entrar
+                            p.innerText = '';
                             const typingInterval = setInterval(() => {
                                 p.textContent += originalText[i];
                                 i++;
-                                if (i >= originalText.length) {
-                                    clearInterval(typingInterval);
-                                }
-                            }, 50); // Velocidade da digitação
-                            self.typingInterval = typingInterval; // Armazena a referência
+                                if (i >= originalText.length) clearInterval(typingInterval);
+                            }, 50);
+                            self.typingInterval = typingInterval;
                         } else {
-                            // Interrompe e limpa o texto ao sair da tela
                             clearInterval(self.typingInterval);
                             p.innerText = '';
                         }
@@ -405,64 +466,16 @@
                 });
             });
 
-
-            // Animação de contagem de números
-            const counters = gsap.utils.toArray('.counter');
-            counters.forEach(counter => {
-                const target = +counter.dataset.target;
-                let num = { value: 0 };
-
-                gsap.to(num, {
-                    value: target,
-                    duration: 3,
-                    ease: 'power2.out',
-                    scrollTrigger: {
-                        trigger: counter,
-                        start: 'top 85%',
-                        toggleActions: 'play reverse play reverse'
-                    },
-                    onUpdate: () => {
-                        // Para o número "infinito", usa um símbolo
-                        if(target === 1 && counter.nextElementSibling.innerText.includes("Infinito")){
-                             counter.textContent = '∞';
-                        } else {
-                             counter.textContent = Math.round(num.value).toLocaleString('pt-BR');
-                        }
-                    }
-                });
-            });
-             
-            // Animação para os itens de estatísticas (fade in)
-            const statItems = gsap.utils.toArray('.stat-item');
-            statItems.forEach(item => {
-                gsap.to(item, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: 'power3.out',
-                    scrollTrigger: {
-                        trigger: item,
-                        start: 'top 85%',
-                        toggleActions: 'play reverse play reverse'
-                    }
-                });
-            });
-
-            // Animação de Parallax para as imagens da galeria
             const parallaxImages = gsap.utils.toArray('.parallax-img');
             parallaxImages.forEach(img => {
                 gsap.to(img, {
-                    yPercent: -15, // Move a imagem para cima 15% da sua altura
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: img.closest('.gallery-item'), // O gatilho é o container da imagem
-                        scrub: true // A animação segue a rolagem
-                    }
+                    yPercent: -15, ease: 'none',
+                    scrollTrigger: { trigger: img.closest('.gallery-item'), scrub: true }
                 });
             });
-
         });
     </script>
 
 </body>
 </html>
+
