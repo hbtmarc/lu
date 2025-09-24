@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
+    <!-- Swiper.js para o Carrossel Mobile -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
     <style>
         /* Reset e Configurações Globais */
         :root {
@@ -47,7 +50,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1; /* Garante que fique atrás de todo o conteúdo */
+            z-index: -1;
             overflow: hidden;
         }
 
@@ -61,14 +64,8 @@
         }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(720deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
 
         /* Estilos Gerais de Seção */
@@ -78,39 +75,35 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 100px 5vw;
+            padding: 120px 5vw;
             position: relative;
             text-align: center;
+            width: 100%;
         }
 
         .section-title {
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
             font-weight: 700;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             line-height: 1.1;
             max-width: 1000px;
-            opacity: 0; /* Estado inicial para animação */
+            opacity: 0;
             transform: translateY(50px);
             will-change: transform, opacity;
         }
 
         .section-subtitle {
-            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
             font-weight: 400;
             color: rgba(255, 255, 255, 0.7);
             max-width: 800px;
-            margin-bottom: 4rem;
-            opacity: 0; /* Estado inicial para animação */
+            margin-bottom: 3rem;
+            opacity: 0;
             transform: translateY(50px);
             will-change: transform, opacity;
         }
 
         /* Seção Hero (Topo) */
-        .hero {
-            justify-content: center;
-            text-align: center;
-        }
-        
         .hero h1 {
             font-size: clamp(3rem, 10vw, 7rem);
             font-weight: 900;
@@ -129,7 +122,7 @@
         .content-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 1.5rem;
             width: 100%;
             max-width: 1200px;
         }
@@ -142,7 +135,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             text-align: left;
-            opacity: 0; /* Estado inicial para animação */
+            opacity: 0;
             transform: translateY(50px);
             will-change: transform, opacity;
         }
@@ -158,229 +151,329 @@
             font-size: 1.1rem;
             line-height: 1.6;
             color: rgba(255, 255, 255, 0.8);
-            min-height: 100px; /* Garante espaço para o texto da máquina de escrever */
+            min-height: 120px;
         }
         
-        /* Seção de Números */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem 1rem;
+        /* Seção Linha do Tempo (Números) */
+        .timeline-section {
+            min-height: auto;
+            padding-bottom: 200px;
+        }
+        .timeline-container {
+            position: relative;
             width: 100%;
-            max-width: 1400px;
+            max-width: 900px;
+            margin-top: 50px;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: rgba(255, 255, 255, 0.15);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            z-index: -1;
+        }
+        
+        #timeline-path {
+            position: absolute;
+            width: 4px;
+            background-color: var(--accent-color);
+            top: 0;
+            left: 50%;
+            margin-left: -2px;
+            z-index: -1;
+            height: 0; /* A altura será animada pelo GSAP */
         }
 
-        .stat-item {
-            text-align: center;
-            opacity: 0;
-            transform: translateY(50px);
-            will-change: transform, opacity;
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            opacity: 0; /* Estado inicial para GSAP */
         }
-        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -12px;
+            background-color: var(--background-color);
+            border: 4px solid var(--accent-color);
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-item.left {
+            left: 0;
+            text-align: right;
+        }
+        .timeline-item.right {
+            left: 50%;
+            text-align: left;
+        }
+        .timeline-item.right::after {
+            left: -12px;
+        }
+        .timeline-content {
+            padding: 20px;
+        }
         .stat-number {
-            font-size: clamp(2.5rem, 6vw, 4rem); /* Tamanho ajustado para caber mais itens */
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 700;
             color: var(--accent-color);
             line-height: 1;
         }
-
         .stat-label {
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-size: clamp(1rem, 2vw, 1.2rem);
             font-weight: 400;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--text-color);
+            display: block;
+            margin-top: 8px;
         }
+        
 
-        /* Galeria com Parallax */
-        .gallery {
-            width: 100%;
-            padding: 5rem 0;
+        /* Galeria Responsiva */
+        .gallery-section {
+            min-height: auto; /* Remove o espaço extra */
         }
-
-        .gallery-item {
+        .gallery-grid {
+            display: none;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
             width: 100%;
-            max-width: 900px;
-            margin: 10vh auto;
-            border-radius: 30px;
+            max-width: 1200px;
+            padding: 1rem;
+            background-color: var(--card-background);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .gallery-grid .img-container {
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: scale(0.9);
+            will-change: transform, opacity;
         }
-
-        .gallery-item img {
+        .gallery-grid img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            will-change: transform; /* Otimização para o parallax */
+            transition: transform 0.4s ease;
         }
+        .gallery-grid .img-container:hover img { transform: scale(1.1); }
 
+        /* Carrossel Mobile */
+        .swiper-container {
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            border-radius: 24px;
+        }
+        .swiper-slide { width: 100%; }
+        .swiper-slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+        .swiper-pagination-bullet-active { background-color: var(--accent-color) !important; }
+
+        /* Media Queries para Responsividade */
+        @media (max-width: 768px) {
+            .timeline-container::after, #timeline-path {
+                left: 10px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 50px;
+                padding-right: 15px;
+            }
+            .timeline-item.left, .timeline-item.right {
+                left: 0;
+                text-align: left;
+            }
+            .timeline-item.left::after, .timeline-item.right::after {
+                left: -2px;
+            }
+        }
+        @media (min-width: 769px) {
+            .gallery-grid {
+                display: grid;
+            }
+            .swiper-container {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <!-- Container para a animação de corações -->
     <div id="heart-container"></div>
 
     <main>
-        <!-- Seção 1: Herói -->
         <section class="section hero">
             <h1>Para LUIZA</h1>
             <p>Uma história escrita nas estrelas.</p>
         </section>
 
-        <!-- Seção 2: Nossa Jornada -->
         <section class="section">
             <h2 class="section-title">Nossa Jornada Começou...</h2>
             <p class="section-subtitle">... e desde o primeiro dia, cada momento tem sido uma aventura inesquecível. Lembro como se fosse hoje.</p>
             <div class="content-grid">
                 <div class="info-card">
                     <h3>O Primeiro Olhar</h3>
-                    <p class="typewriter">Aquele momento em que nossos olhos se encontraram pela primeira vez. O mundo parou, e eu sabia que algo mágico estava prestes a acontecer.</p>
+                    <p class="typewriter">Aquele momento em que nossos olhos se encontraram. O mundo parou, e eu soube que algo mágico estava prestes a acontecer.</p>
                 </div>
                 <div class="info-card">
                     <h3>A Primeira Conversa</h3>
-                    <p class="typewriter">Horas passaram como se fossem minutos. Rimos, compartilhamos sonhos e descobrimos um universo de afinidades que nos conectou instantaneamente.</p>
+                    <p class="typewriter">Horas passaram como se fossem minutos. Rimos, compartilhamos sonhos e descobrimos um universo de afinidades que nos conectou.</p>
                 </div>
                 <div class="info-card">
                     <h3>O Primeiro "Eu Te Amo"</h3>
-                    <p class="typewriter">Três palavras que mudaram tudo. Ditas com o coração, selaram o início do nosso para sempre e ecoam em minha alma todos os dias desde então.</p>
+                    <p class="typewriter">Três palavras que mudaram tudo. Ditas com o coração, selaram o início do nosso para sempre e ecoam em minha alma todos os dias.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Seção 3: Números do Nosso Amor -->
-        <section class="section">
+        <section class="section timeline-section">
             <h2 class="section-title">O Tempo ao Nosso Lado</h2>
             <p class="section-subtitle">Os números que definem a nossa história, crescendo a cada segundo que passa.</p>
-            <div class="stats-grid">
-                <!-- Os cálculos são baseados na data de 25/05/2019 e atualizados dinamicamente -->
+            <div class="timeline-container">
+                <div id="timeline-path"></div>
+                <!-- Itens da linha do tempo serão injetados aqui -->
             </div>
         </section>
         
-        <!-- Seção 4: Galeria de Momentos -->
-        <section class="section gallery-container">
+        <section class="section gallery-section">
             <h2 class="section-title">Momentos Inesquecíveis</h2>
             <p class="section-subtitle">Pequenos fragmentos da nossa felicidade, capturados para a eternidade.</p>
-            <div class="gallery">
-                <div class="gallery-item">
-                     <img src="https://placehold.co/1200x800/000000/FFFFFF?text=Foto+1" alt="Imagem do casal 1" class="parallax-img" loading="lazy">
-                </div>
-                 <div class="gallery-item">
-                     <img src="https://placehold.co/1200x800/111111/FFFFFF?text=Foto+2" alt="Imagem do casal 2" class="parallax-img" loading="lazy">
-                </div>
-                 <div class="gallery-item">
-                     <img src="https://placehold.co/1200x800/050505/FFFFFF?text=Foto+3" alt="Imagem do casal 3" class="parallax-img" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                     <img src="https://placehold.co/1200x800/151515/FFFFFF?text=Foto+4" alt="Imagem do casal 4" class="parallax-img" loading="lazy">
-                </div>
+            
+            <div class="gallery-grid"></div>
+            <div class="swiper-container">
+                <div class="swiper-wrapper"></div>
+                <div class="swiper-pagination"></div>
             </div>
         </section>
 
-        <!-- Seção 5: Pequenos Detalhes -->
         <section class="section">
              <h2 class="section-title">Coisas que Amo em Você</h2>
              <p class="section-subtitle">São os pequenos detalhes que constroem o meu amor gigante por você.</p>
              <div class="content-grid">
                  <div class="info-card">
                      <h3>Seu Sorriso</h3>
-                     <p class="typewriter">A forma como seus olhos se iluminam quando você sorri de verdade. É a minha luz guia nos dias mais escuros e a razão da minha felicidade.</p>
+                     <p class="typewriter">A forma como seus olhos se iluminam quando você sorri. É a minha luz guia nos dias mais escuros e a razão da minha felicidade.</p>
                  </div>
                  <div class="info-card">
                      <h3>Sua Força</h3>
-                     <p class="typewriter">A sua capacidade de enfrentar qualquer desafio com coragem e otimismo me inspira todos os dias. Você é a pessoa mais forte que eu conheço.</p>
+                     <p class="typewriter">Sua capacidade de enfrentar qualquer desafio com coragem e otimismo me inspira. Você é a pessoa mais forte que eu conheço.</p>
                  </div>
                  <div class="info-card">
                      <h3>Nosso Refúgio</h3>
-                     <p class="typewriter">A paz que eu sinto quando estamos juntos, em nosso próprio mundo, onde nada mais importa. Com você, eu estou em casa, em qualquer lugar.</p>
+                     <p class="typewriter">A paz que sinto quando estamos juntos, em nosso próprio mundo. Com você, eu estou em casa, em qualquer lugar.</p>
                  </div>
              </div>
         </section>
 
-        <!-- Seção 6: Mensagem Final -->
         <section class="section">
             <h2 class="section-title">E o futuro... é todo nosso.</h2>
             <p class="section-subtitle" style="max-width: 900px;">Com você, cada dia é uma promessa de felicidade, e cada desafio se torna uma oportunidade para fortalecermos ainda mais o nosso laço. Mal posso esperar por tudo que ainda vamos viver. Eu te amo, hoje e sempre.</p>
         </section>
-
     </main>
 
-    <!-- GSAP (GreenSock Animation Platform) para as animações -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
+            gsap.registerPlugin(ScrollTrigger);
+
             // --- LÓGICA DE CORAÇÕES ---
             const heartContainer = document.getElementById('heart-container');
-            function createHeart() {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = '❤';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 3 + 7 + 's';
-                heart.style.fontSize = Math.random() * 1.5 + 1 + 'rem';
-                
-                heartContainer.appendChild(heart);
-
-                setTimeout(() => {
-                    heart.remove();
-                }, 10000);
+            if (heartContainer) {
+                setInterval(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = Math.random() * 3 + 7 + 's';
+                    heart.style.fontSize = Math.random() * 1.5 + 1 + 'rem';
+                    heartContainer.appendChild(heart);
+                    setTimeout(() => heart.remove(), 10000);
+                }, 300);
             }
-            setInterval(createHeart, 300);
 
-            // --- CÁLCULO DINÂMICO DOS NÚMEROS ---
-            function calculateTime() {
+            // --- SEÇÃO LINHA DO TEMPO (NÚMEROS) ---
+            function setupTimeline() {
                 const startDate = new Date('2019-05-25T00:00:00');
                 const now = new Date();
                 const diff = now.getTime() - startDate.getTime();
 
-                const ms = diff;
                 const secs = Math.floor(diff / 1000);
                 const mins = Math.floor(secs / 60);
                 const hours = Math.floor(mins / 60);
                 const days = Math.floor(hours / 24);
-                
                 let years = now.getFullYear() - startDate.getFullYear();
                 let months = now.getMonth() - startDate.getMonth();
                 if (months < 0 || (months === 0 && now.getDate() < startDate.getDate())) {
                     years--;
-                    months += 12;
+                    months = 12 + months;
                 }
                 const totalMonths = years * 12 + months;
 
-                const hugs = days * 3;
-                const smiles = days * 18;
-                const kisses = days * 6;
-
-                return {
-                    years, totalMonths, days, hours, mins, secs, ms, hugs, smiles, kisses
+                const stats = {
+                    "Anos": years, "Meses": totalMonths, "Dias": days, "Horas": hours, "Minutos": mins, "Segundos": secs,
+                    "Abraços": days * 3, "Sorrisos": days * 18, "Beijos": days * 6,
                 };
-            }
-            
-            function updateStats() {
-                const stats = calculateTime();
-                const statsGrid = document.querySelector('.stats-grid');
-                statsGrid.innerHTML = `
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.years}">0</span><span class="stat-label">Anos</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.totalMonths}">0</span><span class="stat-label">Meses</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.days}">0</span><span class="stat-label">Dias</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.hours}">0</span><span class="stat-label">Horas</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.mins}">0</span><span class="stat-label">Minutos</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.secs}">0</span><span class="stat-label">Segundos</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.hugs}">0</span><span class="stat-label">Abraços</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.smiles}">0</span><span class="stat-label">Sorrisos</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="${stats.kisses}">0</span><span class="stat-label">Beijos</span></div>
-                    <div class="stat-item"><span class="stat-number counter" data-target="1">∞</span><span class="stat-label">Amor Infinito</span></div>
-                `;
-                 // Animação para os itens de estatísticas (fade in)
-                const statItems = gsap.utils.toArray('.stat-item');
-                statItems.forEach(item => {
-                    gsap.to(item, {
-                        opacity: 1,
-                        y: 0,
-                        duration: 1,
-                        ease: 'power3.out',
+                
+                const timelineContainer = document.querySelector('.timeline-container');
+                if(!timelineContainer) return;
+                
+                let htmlContent = '';
+                let isRight = true;
+                for(const [label, value] of Object.entries(stats)) {
+                    htmlContent += `
+                        <div class="timeline-item ${isRight ? 'right' : 'left'}">
+                            <div class="timeline-content">
+                                <span class="stat-number counter" data-target="${value}">0</span>
+                                <span class="stat-label">${label}</span>
+                            </div>
+                        </div>`;
+                    isRight = !isRight;
+                }
+                htmlContent += `
+                    <div class="timeline-item ${isRight ? 'right' : 'left'}">
+                        <div class="timeline-content">
+                            <span class="stat-number">∞</span>
+                            <span class="stat-label">Amor Infinito</span>
+                        </div>
+                    </div>`;
+                
+                timelineContainer.innerHTML += htmlContent;
+
+                // Animação da trilha
+                gsap.to("#timeline-path", {
+                    height: "100%",
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: ".timeline-container",
+                        start: "top center",
+                        end: "bottom center",
+                        scrub: true
+                    }
+                });
+
+                // Animação dos itens da linha do tempo
+                gsap.utils.toArray('.timeline-item').forEach(item => {
+                    const direction = item.classList.contains('right') ? 1 : -1;
+                    gsap.fromTo(item, { opacity: 0, x: 50 * direction }, {
+                        opacity: 1, x: 0, duration: 1, ease: 'power3.out',
                         scrollTrigger: {
                             trigger: item,
                             start: 'top 85%',
@@ -388,64 +481,67 @@
                         }
                     });
                 });
-                
-                // Animação de contagem de números
-                const counters = gsap.utils.toArray('.counter');
-                counters.forEach(counter => {
+
+                // Animação dos contadores
+                gsap.utils.toArray('.counter').forEach(counter => {
                     const target = +counter.dataset.target;
                     let num = { value: 0 };
-                    
-                    if (target === 1) { // Lógica para Amor Infinito
-                        counter.textContent = '∞';
-                        return;
-                    }
-
                     gsap.to(num, {
-                        value: target,
-                        duration: 3,
-                        ease: 'power2.out',
+                        value: target, duration: 3, ease: 'power2.out',
                         scrollTrigger: {
-                            trigger: counter,
-                            start: 'top 85%',
-                            toggleActions: 'play reverse play reverse',
-                            onLeaveBack: () => num.value = 0, // Reseta o valor ao sair da tela
-                            onEnter: () => gsap.to(num, { value: target, duration: 3, ease: 'power2.out' })
+                            trigger: counter, start: 'top 85%', toggleActions: 'play none none reverse',
                         },
                         onUpdate: () => {
-                             counter.textContent = Math.round(num.value).toLocaleString('pt-BR');
+                            counter.textContent = Math.round(num.value).toLocaleString('pt-BR');
                         }
                     });
                 });
             }
+            setupTimeline();
             
-            updateStats(); // Chame a função para popular e animar
+            // --- GALERIA DE IMAGENS E CARROSSEL ---
+            const imageSources = [
+                "https://placehold.co/400x400/000/fff?text=L+&+M+1", "https://placehold.co/400x400/111/fff?text=L+&+M+2",
+                "https://placehold.co/400x400/222/fff?text=L+&+M+3", "https://placehold.co/400x400/333/fff?text=L+&+M+4",
+                "https://placehold.co/400x400/444/fff?text=L+&+M+5", "https://placehold.co/400x400/555/fff?text=L+&+M+6",
+                "https://placehold.co/400x400/666/fff?text=L+&+M+7", "https://placehold.co/400x400/777/fff?text=L+&+M+8",
+                "https://placehold.co/400x400/888/fff?text=L+&+M+9", "https://placehold.co/400x400/999/fff?text=L+&+M+10"
+            ];
+            const galleryGrid = document.querySelector('.gallery-grid');
+            const swiperWrapper = document.querySelector('.swiper-wrapper');
+            if (galleryGrid && swiperWrapper) {
+                imageSources.forEach(src => {
+                    galleryGrid.innerHTML += `<div class="img-container"><img src="${src}" alt="Foto do casal" loading="lazy"></div>`;
+                    swiperWrapper.innerHTML += `<div class="swiper-slide"><img src="${src}" alt="Foto do casal" loading="lazy"></div>`;
+                });
+            }
+            new Swiper('.swiper-container', {
+                loop: true,
+                autoplay: { delay: 3000, disableOnInteraction: false },
+                pagination: { el: '.swiper-pagination', clickable: true },
+            });
+            gsap.to(".gallery-grid .img-container", {
+                opacity: 1, scale: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out',
+                scrollTrigger: { trigger: ".gallery-grid", start: "top 80%", toggleActions: "play reverse play reverse" }
+            });
 
-            // --- ANIMAÇÕES GERAIS COM GSAP ---
-            gsap.registerPlugin(ScrollTrigger);
-
+            // --- ANIMAÇÕES GERAIS ---
             gsap.from('.hero h1, .hero p', { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: 'power3.out' });
-
-            const sectionHeadings = gsap.utils.toArray('.section-title, .section-subtitle');
-            sectionHeadings.forEach(heading => {
+            gsap.utils.toArray('.section-title, .section-subtitle').forEach(heading => {
                 gsap.to(heading, {
                     opacity: 1, y: 0, duration: 1, ease: 'power3.out',
                     scrollTrigger: { trigger: heading, start: 'top 85%', toggleActions: 'play reverse play reverse' }
                 });
             });
-
-            const infoCards = gsap.utils.toArray('.info-card');
-            infoCards.forEach(card => {
+            gsap.utils.toArray('.info-card').forEach(card => {
                 gsap.to(card, {
                     opacity: 1, y: 0, duration: 1, ease: 'power3.out',
                     scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play reverse play reverse' }
                 });
             });
-
-            const typewriterElements = gsap.utils.toArray('.typewriter');
-            typewriterElements.forEach(p => {
+            gsap.utils.toArray('.typewriter').forEach(p => {
                 const originalText = p.innerText;
                 p.innerText = '';
-                
                 ScrollTrigger.create({
                     trigger: p, start: 'top 85%', once: false,
                     onToggle: self => {
@@ -453,8 +549,7 @@
                             let i = 0;
                             p.innerText = '';
                             const typingInterval = setInterval(() => {
-                                p.textContent += originalText[i];
-                                i++;
+                                p.textContent += originalText[i++];
                                 if (i >= originalText.length) clearInterval(typingInterval);
                             }, 50);
                             self.typingInterval = typingInterval;
@@ -465,17 +560,8 @@
                     },
                 });
             });
-
-            const parallaxImages = gsap.utils.toArray('.parallax-img');
-            parallaxImages.forEach(img => {
-                gsap.to(img, {
-                    yPercent: -15, ease: 'none',
-                    scrollTrigger: { trigger: img.closest('.gallery-item'), scrub: true }
-                });
-            });
         });
     </script>
-
 </body>
 </html>
 
