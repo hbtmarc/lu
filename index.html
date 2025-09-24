@@ -3,110 +3,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Luiza</title>
+    <title>Para Meu Amor</title>
     
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- Fonte do Google similar à SF-Pro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <script src="js/app.js" defer></script>
+    <style>
+        /* Reset e Configurações Globais */
+        :root {
+            --background-color: #000000;
+            --text-color: #f5f5f7;
+            --card-background: rgba(29, 29, 31, 0.7);
+            --accent-color: #ff4567;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Container de Corações Flutuantes */
+        #heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--accent-color);
+            animation: floatUp 10s ease-in forwards;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Estilos Gerais de Seção */
+        .section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 100px 5vw;
+            position: relative;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+            max-width: 1000px;
+            opacity: 0; /* Estado inicial para animação */
+            transform: translateY(50px);
+            will-change: transform, opacity;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin-bottom: 4rem;
+            opacity: 0; /* Estado inicial para animação */
+            transform: translateY(50px);
+            will-change: transform, opacity;
+        }
+
+        /* Seção Hero (Topo) */
+        .hero {
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+
+        /* Conteúdo em Blocos */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .info-card {
+            background-color: var(--card-background);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            text-align: left;
+            opacity: 0; /* Estado inicial para animação */
+            transform: translateY(50px);
+            will-change: transform, opacity;
+        }
+        
+        .info-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .info-card p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+            min-height: 100px; /* Garante espaço para o texto da máquina de escrever */
+        }
+        
+        /* Seção de Números */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .stat-item {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            will-change: transform, opacity;
+        }
+        
+        .stat-number {
+            font-size: clamp(3.5rem, 10vw, 6rem);
+            font-weight: 900;
+            color: var(--accent-color);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Galeria com Parallax */
+        .gallery {
+            width: 100%;
+            padding: 5rem 0;
+        }
+
+        .gallery-item {
+            width: 100%;
+            max-width: 900px;
+            margin: 10vh auto;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            will-change: transform; /* Otimização para o parallax */
+        }
+
+    </style>
 </head>
 <body>
 
-    <audio id="background-music" loop>
-        <source src="music/meu-abrigo-melim.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Container para a animação de corações -->
+    <div id="heart-container"></div>
 
-    <div class="hearts-container"></div>
-
-    <main id="main-content">
-
-        <section id="hero" class="content-section">
-            <h1 class="text-large-title gradient-text animate-on-scroll">Para o meu amor, Luiza.</h1>
-            <p class="text-body animate-on-scroll" style="--animation-delay: 1;">Uma pequena celebração da nossa jornada.</p>
+    <main>
+        <!-- Seção 1: Herói -->
+        <section class="section hero">
+            <h1>Para Luiza</h1>
+            <p>Uma história escrita nas estrelas.</p>
         </section>
 
-        <div class="summary-grid">
-            
-            <div id="timeline-card" class="summary-card animate-on-scroll large-card">
-                <h2 class="text-title-2">A Nossa Jornada</h2>
-                <div class="time-breakdown">
-                    <div class="time-item">
-                        <p class="text-large-title animate-number" data-target="2308">0</p>
-                        <span class="text-caption">dias de cumplicidade</span>
-                    </div>
-                    <div class="time-item">
-                        <p class="text-large-title animate-number" data-target="55392">0</p>
-                        <span class="text-caption">horas de risadas</span>
-                    </div>
+        <!-- Seção 2: Nossa Jornada -->
+        <section class="section">
+            <h2 class="section-title">Nossa Jornada Começou...</h2>
+            <p class="section-subtitle">... e desde o primeiro dia, cada momento tem sido uma aventura inesquecível. Lembro como se fosse hoje.</p>
+            <div class="content-grid">
+                <div class="info-card">
+                    <h3>O Primeiro Olhar</h3>
+                    <p class="typewriter">Aquele momento em que nossos olhos se encontraram pela primeira vez. O mundo parou, e eu sabia que algo mágico estava prestes a acontecer.</p>
+                </div>
+                <div class="info-card">
+                    <h3>A Primeira Conversa</h3>
+                    <p class="typewriter">Horas passaram como se fossem minutos. Rimos, compartilhamos sonhos e descobrimos um universo de afinidades que nos conectou instantaneamente.</p>
+                </div>
+                <div class="info-card">
+                    <h3>O Primeiro "Eu Te Amo"</h3>
+                    <p class="typewriter">Três palavras que mudaram tudo. Ditas com o coração, selaram o início do nosso para sempre e ecoam em minha alma todos os dias desde então.</p>
                 </div>
             </div>
+        </section>
 
-            <div id="partnership-card" class="summary-card animate-on-scroll">
-                <div class="card-icon partnership-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <!-- Seção 3: Números -->
+        <section class="section">
+            <h2 class="section-title">Cada Segundo Conta</h2>
+            <p class="section-subtitle">Os números que definem a nossa história, crescendo a cada dia que passa.</p>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number counter" data-target="1825">0</span>
+                    <span class="stat-label">Dias Juntos</span>
                 </div>
-                <h3 class="text-body">Parceria Nível Pro</h3>
-                <p class="text-caption">Confiança e suporte incondicionais.</p>
+                <div class="stat-item">
+                    <span class="stat-number counter" data-target="1503">0</span>
+                    <span class="stat-label">Abraços Apertados</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number counter" data-target="9999">0</span>
+                    <span class="stat-label">Sorrisos Compartilhados</span>
+                </div>
+                 <div class="stat-item">
+                    <span class="stat-number counter" data-target="1">0</span>
+                    <span class="stat-label">Amor Infinito</span>
+                </div>
             </div>
+        </section>
+        
+        <!-- Seção 4: Galeria de Momentos -->
+        <section class="section gallery-container">
+            <h2 class="section-title">Momentos Inesquecíveis</h2>
+            <p class="section-subtitle">Pequenos fragmentos da nossa felicidade, capturados para a eternidade.</p>
+            <div class="gallery">
+                <!-- Para um melhor desempenho, as imagens devem ser otimizadas para a web -->
+                <!-- Substitua os placeholders abaixo pelas suas fotos -->
+                <div class="gallery-item">
+                     <img src="https://placehold.co/1200x800/000000/FFFFFF?text=Foto+1" alt="Imagem do casal 1" class="parallax-img" loading="lazy">
+                </div>
+                 <div class="gallery-item">
+                     <img src="https://placehold.co/1200x800/111111/FFFFFF?text=Foto+2" alt="Imagem do casal 2" class="parallax-img" loading="lazy">
+                </div>
+                 <div class="gallery-item">
+                     <img src="https://placehold.co/1200x800/050505/FFFFFF?text=Foto+3" alt="Imagem do casal 3" class="parallax-img" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                     <img src="https://placehold.co/1200x800/151515/FFFFFF?text=Foto+4" alt="Imagem do casal 4" class="parallax-img" loading="lazy">
+                </div>
+            </div>
+        </section>
 
-            <div id="battery-card" class="summary-card animate-on-scroll">
-                <div class="card-icon battery-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 4h-3V2h-4v2H7c-1.1 0-2.9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H7V6h1.67L10 7.33 11.33 6H13v14z"/></svg>
-                </div>
-                <h3 class="text-body">Bateria de Longa Duração</h3>
-                <p class="text-caption">Um amor que se renova a cada dia.</p>
-            </div>
-
-            <div id="gallery-card" class="summary-card animate-on-scroll large-card full-width">
-                <h2 class="text-title-1">Nossos Momentos</h2>
-                <div class="gallery-wrapper">
-                    <div class="gallery-container">
-                        <img src="images/foto1.jpg" alt="Memória 1" class="gallery-slide active">
-                        <img src="images/foto2.jpg" alt="Memória 2" class="gallery-slide">
-                        <img src="images/foto3.jpg" alt="Memória 3" class="gallery-slide">
-                        <img src="images/foto4.jpg" alt="Memória 4" class="gallery-slide">
-                        <img src="images/foto5.jpg" alt="Memória 5" class="gallery-slide">
-                        <img src="images/foto6.jpg" alt="Memória 6" class="gallery-slide">
-                        <img src="images/foto7.jpg" alt="Memória 7" class="gallery-slide">
-                        <img src="images/foto8.jpg" alt="Memória 8" class="gallery-slide">
-                        <img src="images/foto9.jpg" alt="Memória 9" class="gallery-slide">
-                        <img src="images/foto10.jpg" alt="Memória 10" class="gallery-slide">
-                    </div>
-                    <button class="gallery-nav prev">&lt;</button>
-                    <button class="gallery-nav next">&gt;</button>
-                </div>
-            </div>
-
-            <div id="design-card" class="summary-card animate-on-scroll">
-                 <div class="card-icon design-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.02c-5.51 0-9.98 4.47-9.98 9.98s4.47 9.98 9.98 9.98 9.98-4.47 9.98-9.98S17.51 2.02 12 2.02zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-.5-12.01l-2.5 4.5-1.5-2.25L5.5 15h13l-4.5-6.01z"/></svg>
-                </div>
-                <h3 class="text-body">Design Único</h3>
-                <p class="text-caption">Uma história que só nós poderíamos criar.</p>
-            </div>
-
-            <div id="letter-card" class="summary-card animate-on-scroll large-card">
-                <div class="letter-content">
-                    <h2 class="text-title-1">Luiza,</h2>
-                    <p class="text-body">
-                        Hoje, quando olho para trás, vejo a tapeçaria que tecemos juntos, fio a fio, com risadas, sonhos e um amor que se tornou o alicerce de tudo. Cada um desses dias ao seu lado foi um presente. Sua ternura é o meu porto seguro, sua força é a minha inspiração. Obrigado por ser você.
-                    </p>
-                    <p class="text-body" style="margin-top: 1rem;">
-                        Com todo o meu amor, sempre.
-                    </p>
-                </div>
-            </div>
-        </div>
+        <!-- Seção 5: Mensagem Final -->
+        <section class="section">
+            <h2 class="section-title">E o futuro... é todo nosso.</h2>
+            <p class="section-subtitle" style="max-width: 900px;">Com você, cada dia é uma promessa de felicidade, e cada desafio se torna uma oportunidade para fortalecermos ainda mais o nosso laço. Mal posso esperar por tudo que ainda vamos viver. Eu te amo, hoje e sempre.</p>
+        </section>
 
     </main>
 
-    <footer id="footer">
-        <div class="music-controls">
-            <button id="play-pause-btn" class="control-btn" aria-label="Tocar/Pausar"></button>
-            <div class="volume-container">
-                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.03" aria-label="Controlo de volume">
-            </div>
-        </div>
-    </footer>
+    <!-- GSAP (GreenSock Animation Platform) para as animações -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- LÓGICA ORIGINAL DE CORAÇÕES ---
+            const heartContainer = document.getElementById('heart-container');
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 3 + 7 + 's'; // Duração entre 7s e 10s
+                heart.style.fontSize = Math.random() * 1.5 + 1 + 'rem'; // Tamanho entre 1rem e 2.5rem
+                
+                heartContainer.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 10000);
+            }
+            // Cria um novo coração a cada 300ms
+            setInterval(createHeart, 300);
+
+            
+            // --- NOVAS ANIMAÇÕES COM GSAP ---
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Animação de entrada do título principal (Hero)
+            gsap.from('.hero h1, .hero p', {
+                opacity: 0,
+                y: 50,
+                duration: 1.5,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
+
+            // Animação para títulos e subtítulos de cada seção
+            const sectionHeadings = gsap.utils.toArray('.section-title, .section-subtitle');
+            sectionHeadings.forEach(heading => {
+                gsap.to(heading, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: heading,
+                        start: 'top 85%',
+                        toggleActions: 'play reverse play reverse'
+                    }
+                });
+            });
+
+            // Animação para os cartões de informação
+            const infoCards = gsap.utils.toArray('.info-card');
+            infoCards.forEach(card => {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%',
+                        toggleActions: 'play reverse play reverse'
+                    }
+                });
+            });
+
+            // Animação de máquina de escrever para parágrafos
+            const typewriterElements = gsap.utils.toArray('.typewriter');
+            typewriterElements.forEach(p => {
+                const originalText = p.innerText;
+                p.innerText = ''; // Limpa o texto inicial
+                
+                ScrollTrigger.create({
+                    trigger: p,
+                    start: 'top 85%',
+                    once: false, // Permite que a animação rode novamente
+                    onToggle: self => {
+                        if (self.isActive) {
+                            // Anima a "escrita" quando entra na tela
+                            let i = 0;
+                            p.innerText = ''; // Reseta ao re-entrar
+                            const typingInterval = setInterval(() => {
+                                p.textContent += originalText[i];
+                                i++;
+                                if (i >= originalText.length) {
+                                    clearInterval(typingInterval);
+                                }
+                            }, 50); // Velocidade da digitação
+                            self.typingInterval = typingInterval; // Armazena a referência
+                        } else {
+                            // Interrompe e limpa o texto ao sair da tela
+                            clearInterval(self.typingInterval);
+                            p.innerText = '';
+                        }
+                    },
+                });
+            });
+
+
+            // Animação de contagem de números
+            const counters = gsap.utils.toArray('.counter');
+            counters.forEach(counter => {
+                const target = +counter.dataset.target;
+                let num = { value: 0 };
+
+                gsap.to(num, {
+                    value: target,
+                    duration: 3,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: counter,
+                        start: 'top 85%',
+                        toggleActions: 'play reverse play reverse'
+                    },
+                    onUpdate: () => {
+                        // Para o número "infinito", usa um símbolo
+                        if(target === 1 && counter.nextElementSibling.innerText.includes("Infinito")){
+                             counter.textContent = '∞';
+                        } else {
+                             counter.textContent = Math.round(num.value).toLocaleString('pt-BR');
+                        }
+                    }
+                });
+            });
+             
+            // Animação para os itens de estatísticas (fade in)
+            const statItems = gsap.utils.toArray('.stat-item');
+            statItems.forEach(item => {
+                gsap.to(item, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 85%',
+                        toggleActions: 'play reverse play reverse'
+                    }
+                });
+            });
+
+            // Animação de Parallax para as imagens da galeria
+            const parallaxImages = gsap.utils.toArray('.parallax-img');
+            parallaxImages.forEach(img => {
+                gsap.to(img, {
+                    yPercent: -15, // Move a imagem para cima 15% da sua altura
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: img.closest('.gallery-item'), // O gatilho é o container da imagem
+                        scrub: true // A animação segue a rolagem
+                    }
+                });
+            });
+
+        });
+    </script>
 
 </body>
 </html>
